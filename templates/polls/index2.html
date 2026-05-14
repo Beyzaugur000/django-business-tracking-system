@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'admin-lte/dist/css/adminlte.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'plugins/fontawesome-free/css/all.min.css' %}"
+    />
+  </head>
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <div class="sidebar">
+          <nav>
+            <ul>
+              <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <div class="content-wrapper">
+        <div class="content-header">
+          <h1>Dashboard</h1>
+        </div>
+        <div class="content">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="small-box bg-info">
+                <h3>{{ orders }}</h3>
+                <p>New Orders</p>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="small-box bg-success">
+                <h3>{{ bounce_rate }}%</h3>
+                <p>Bounce Rate</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <form method="POST" action="{% url 'add_order' %}">
+            {% csrf_token %}
+            <input
+              type="text"
+              name="order_name"
+              placeholder="Order Name"
+              required
+            />
+            <button type="submit">Add Order</button>
+          </form>
+
+          <!-- Chart -->
+          <canvas id="salesChart" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'admin-lte/dist/js/adminlte.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      var salesData = {{ monthly_sales|safe }};
+      var months = {{ months|safe }};
+
+      var ctx = document.getElementById('salesChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: months,
+          datasets: [{
+            label: 'Monthly Sales',
+            data: salesData,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'admin-lte/dist/css/adminlte.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'plugins/fontawesome-free/css/all.min.css' %}"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <aside class="main-sidebar sidebar-dark-primary">
+        <a href="#" class="brand-link">Dashboard</a>
+        <div class="sidebar">
+          <ul class="nav nav-pills nav-sidebar flex-column">
+            <li class="nav-item">
+              <a href="#" class="nav-link">Dashboard</a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+      <div class="content-wrapper">
+        <div class="content-header">
+          <h1>Dashboard</h1>
+        </div>
+        <div class="content">
+          <div class="row">
+            <!-- Dinamik Kartlar -->
+            <div class="col-lg-3 col-6">
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3>{{ orders_count }}</h3>
+                  <p>Orders</p>
+                </div>
+                <a href="#" class="small-box-footer">More info</a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-6">
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3>{{ products_count }}</h3>
+                  <p>Products</p>
+                </div>
+                <a href="#" class="small-box-footer">More info</a>
+              </div>
+            </div>
+            <div class="col-lg-3 col-6">
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3>{{ customers_count }}</h3>
+                  <p>Customers</p>
+                </div>
+                <a href="#" class="small-box-footer">More info</a>
+              </div>
+            </div>
+          </div>
+          <!-- Recent Orders Table -->
+          <h3>Recent Orders</h3>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in recent_orders %}
+              <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.customer.name }}</td>
+                <td>{{ order.order_date }}</td>
+                <td>{{ order.status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'admin-lte/dist/js/adminlte.min.js' %}"></script>
+  </body>
+</html>
